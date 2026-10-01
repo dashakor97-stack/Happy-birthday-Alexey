@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Днем Рождения!</title>
+    <!-- Подключаем элегантный шрифт с засечками для соответствия купону -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* Цветовая палитра на основе купона */
+        :root {
+            --navy: #192241; /* Темно-синий */
+            --gold: #c3a16f; /* Золотой/Бронзовый */
+            --cream: #f4eee6; /* Слоновая кость / фон купона */
+            --white: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Playfair Display', Georgia, serif;
+            background-color: var(--cream);
+            color: var(--navy);
+        }
+
+        /* Шапка сайта */
+        .header {
+            background-color: var(--navy);
+            color: var(--gold);
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 2.5em;
+            font-weight: bold;
+            font-style: italic;
+            border-bottom: 4px double var(--gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Главная открытка (Стиль: Винтажный альбом) */
+        .main-card-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px 30px;
+            background: var(--white);
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            box-shadow: 0 15px 40px rgba(25, 34, 65, 0.08);
+            position: relative;
+        }
+
+        /* Угловые винтажные акценты */
+        .main-card-container::before,
+        .main-card-container::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--gold);
+        }
+        .main-card-container::before {
+            top: 15px; left: 15px;
+            border-right: none; border-bottom: none;
+        }
+        .main-card-container::after {
+            bottom: 15px; right: 15px;
+            border-left: none; border-top: none;
+        }
+
+        .main-title {
+            text-align: center;
+            font-size: 2.2em;
+            color: var(--navy);
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 15px;
+        }
+
+        /* Сетка для фотографий */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            padding: 10px;
+        }
+
+        /* Рамки для фото в стиле Полароид */
+        .photo-frame {
+            background: var(--white);
+            padding: 12px 12px 40px 12px;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 2px 4px 15px rgba(0,0,0,0.05);
+            position: relative;
+            transition: transform 0.3s ease, z-index 0.3s;
+        }
+
+        /* Легкий наклон для эффекта небрежности */
+        .photo-frame:nth-child(1) { transform: rotate(-3deg); }
+        .photo-frame:nth-child(2) { transform: rotate(2deg); }
+        .photo-frame:nth-child(3) { transform: rotate(-1deg); }
+
+        .photo-frame:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 10;
+            box-shadow: 5px 10px 25px rgba(25, 34, 65, 0.15);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background-color: #e9e5de; /* Заглушка, если фото не загрузится */
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1em;
+            font-style: italic;
+            color: var(--navy);
+        }
+
+        /* Текстовый блок */
+        .intro-text {
+            text-align: center;
+            font-size: 1.4em;
+            padding: 20px 0;
+            margin: 20px auto 40px;
+            max-width: 700px;
+            color: var(--navy);
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+            font-style: italic;
+        }
+
+        /* Сетка купонов */
+        .coupons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 20px 30px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .coupon-card {
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .coupon-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .coupon-card img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 25px;
+            /* Легкая тень, чтобы купон выделялся на фоне */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
+            border-radius: 5px;
+        }
+
+        /* Кнопка активации - стилизована точно под купон */
+        .activate-btn {
+            background-color: var(--navy);
+            color: var(--gold);
+            border: 2px solid var(--navy);
+            padding: 10px 35px;
+            font-size: 1.1em;
+            border-radius: 30px; /* Овальная форма */
+            cursor: pointer;
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(25, 34, 65, 0.2);
+        }
+
+        .activate-btn:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+        }
+
+        .activate-btn:active {
+            transform: scale(0.95);
+        }
+
+        .activate-btn:disabled {
+            background-color: transparent;
+            color: #a09d98;
+            border: 1px solid #a09d98;
+            cursor: not-allowed;
+            box-shadow: none;
+            letter-spacing: 1px;
+            text-transform: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <div class="header">С Днем Рождения!</div>
+
+    <!-- Обновленная главная открытка (Альбом) -->
+    <div class="main-card-container">
+        <div class="main-title">Самые теплые воспоминания</div>
+        
+        <div class="photo-gallery">
+            <!-- Рамка 1 -->
+            <div class="photo-frame">
+                <!-- Вставьте имя вашего файла вместо photo1.jpg -->
+                <img src="daughter.jpg" alt="Фото 1"> 
+                <div class="photo-caption">Счастливые моменты</div>
+            </div>
+            
+            <!-- Рамка 2 -->
+            <div class="photo-frame">
+                <!-- Вставьте имя вашего файла вместо photo2.jpg -->
+                <img src="family.jpg" alt="Фото 2">
+                <div class="photo-caption">Вместе</div>
+            </div>
+            
+            <!-- Рамка 3 -->
+            <div class="photo-frame">
+                <!-- Вставьте имя вашего файла вместо photo3.jpg -->
+                <img src="kiss.jpg" alt="Фото 3">
+                <div class="photo-caption">Самый любящий папа</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="intro-text">
+        Для тебя приготовлены особенные подарки.<br>
+        Ты можешь воспользоваться ими в любое время.
+    </div>
+
+    <div class="coupons-grid" id="coupons-container">
+        <!-- Купоны генерируются скриптом -->
+    </div>
+
+    <script>
+        // Здесь укажите точные названия файлов ваших купонов
+        const couponFiles = [
+            "cup1.jpg",
+            "cup2.jpg",
+            "cup3.jpg",
+            "cup4.jpg",
+            "cup5.jpg",
+            "cup6.jpg",
+            "cup7.jpg",
+            "cup8.jpg",
+            "cup9.jpg"
+        ];
+
+        // Золотое конфетти под стиль сайта
+        function fireConfetti() {
+            var duration = 3000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#c3a16f', '#192241', '#ffffff']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#c3a16f', '#192241', '#ffffff']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fireConfetti();
+            const container = document.getElementById('coupons-container');
+
+            couponFiles.forEach((file, index) => {
+                const couponId = 'coupon_' + index;
+                const isActivated = localStorage.getItem(couponId) === 'true';
+
+                const card = document.createElement('div');
+                card.className = 'coupon-card';
+
+                const img = document.createElement('img');
+                img.src = file;
+                img.alt = 'Купон ' + (index + 1);
+
+                const btn = document.createElement('button');
+                btn.className = 'activate-btn';
+                
+                if (isActivated) {
+                    btn.innerText = 'Активировано';
+                    btn.disabled = true;
+                } else {
+                    btn.innerText = 'Активировать';
+                    btn.addEventListener('click', function() {
+                        this.innerText = 'Активировано';
+                        this.disabled = true;
+                        localStorage.setItem(couponId, 'true');
+                        
+                        // Золотой взрыв при нажатии
+                        confetti({
+                            particleCount: 80,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                            colors: ['#c3a16f', '#ffffff']
+                        });
+                    });
+                }
+
+                card.appendChild(img);
+                card.appendChild(btn);
+                container.appendChild(card);
+            });
+        });
+    </script>
+</body>
+</html>
